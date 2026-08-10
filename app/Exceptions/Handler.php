@@ -34,4 +34,19 @@ class Handler extends ExceptionHandler
     {
         //
     }
+
+    /**
+     * Register the exception handling callbacks for the application.
+     *
+     * @return void
+     */
+    public function render($request, \Throwable $e)
+    {
+        if (isset($_ENV['VERCEL']) || getenv('VERCEL')) {
+            echo "<h1>ORIGINAL CRASH ROOT CAUSE:</h1>";
+            echo "<pre>" . (string) $e . "</pre>";
+            die();
+        }
+        return parent::render($request, $e);
+    }
 }
