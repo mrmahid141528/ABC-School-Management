@@ -18,9 +18,4 @@ if (isset($_ENV['VERCEL']) || getenv('VERCEL') || true) { // Always override on 
     $_ENV['APP_EVENTS_CACHE'] = '/tmp/events.php';
 }
 
-try {
-    require __DIR__ . '/../public/index.php';
-} catch (\Throwable $e) {
-    echo "<h1>CRITICAL FATAL ERROR:</h1>";
-    echo "<pre>" . (string) $e . "</pre>";
-}
+require __DIR__ . '/../public/index.php';

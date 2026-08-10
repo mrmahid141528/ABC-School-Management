@@ -42,11 +42,6 @@ class Handler extends ExceptionHandler
      */
     public function render($request, \Throwable $e)
     {
-        if (isset($_ENV['VERCEL']) || getenv('VERCEL')) {
-            echo "<h1>ORIGINAL CRASH ROOT CAUSE:</h1>";
-            echo "<pre>" . (string) $e . "</pre>";
-            die();
-        }
         return parent::render($request, $e);
     }
 }
