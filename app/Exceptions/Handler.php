@@ -42,6 +42,13 @@ class Handler extends ExceptionHandler
      */
     public function render($request, \Throwable $e)
     {
+        if (isset($_ENV['VERCEL']) || getenv('VERCEL')) {
+            if (!($e instanceof \Illuminate\Auth\AuthenticationException) && !($e instanceof \Illuminate\Validation\ValidationException)) {
+                echo "<h1>ORIGINAL CRASH ROOT CAUSE (FILTERED):</h1>\n";
+                echo "<pre>" . (string) $e . "</pre>";
+                die();
+            }
+        }
         return parent::render($request, $e);
     }
 }
