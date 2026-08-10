@@ -18,8 +18,19 @@ $app = new Illuminate\Foundation\Application(
 // Map storage to /tmp since Vercel Lambda file system is read-only
 if (isset($_ENV['VERCEL']) || getenv('VERCEL')) {
     $app->useStoragePath('/tmp');
-    if (!is_dir('/tmp/framework/views')) {
-        @mkdir('/tmp/framework/views', 0777, true);
+    $dirs = [
+        '/tmp/framework/views',
+        '/tmp/framework/cache',
+        '/tmp/framework/cache/data',
+        '/tmp/framework/sessions',
+        '/tmp/framework/testing',
+        '/tmp/logs',
+        '/tmp/app/public'
+    ];
+    foreach ($dirs as $dir) {
+        if (!is_dir($dir)) {
+            @mkdir($dir, 0777, true);
+        }
     }
 }
 
