@@ -3,6 +3,15 @@
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 ini_set('display_errors', '1');
 
+// Vercel Serverless read-only filesystem fix for Laravel bootstrap cache
+if (isset($_ENV['VERCEL']) || getenv('VERCEL') || true) { // Always override on Vercel entrypoint
+    $_ENV['APP_SERVICES_CACHE'] = '/tmp/services.php';
+    $_ENV['APP_PACKAGES_CACHE'] = '/tmp/packages.php';
+    $_ENV['APP_CONFIG_CACHE'] = '/tmp/config.php';
+    $_ENV['APP_ROUTES_CACHE'] = '/tmp/routes.php';
+    $_ENV['APP_EVENTS_CACHE'] = '/tmp/events.php';
+}
+
 try {
     require __DIR__ . '/../public/index.php';
 } catch (\Throwable $e) {
