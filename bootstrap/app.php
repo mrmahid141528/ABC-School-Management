@@ -12,8 +12,16 @@
 */
 
 $app = new Illuminate\Foundation\Application(
-    realpath(__DIR__.'/../')
+    realpath(__DIR__ . '/../')
 );
+
+// Map storage to /tmp since Vercel Lambda file system is read-only
+if (isset($_ENV['VERCEL']) || getenv('VERCEL')) {
+    $app->useStoragePath('/tmp');
+    if (!is_dir('/tmp/framework/views')) {
+        @mkdir('/tmp/framework/views', 0777, true);
+    }
+}
 
 /*
 |--------------------------------------------------------------------------
